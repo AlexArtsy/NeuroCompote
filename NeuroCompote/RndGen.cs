@@ -10,14 +10,14 @@ namespace NeuroCompote
     {
         private static Random rnd = new Random();
 
-        public static double InitWeight()
+        public static double GetWeight()
         {
             return 2 - rnd.NextDouble();
         }
 
         public static double AdjustWeight()
         {
-            return InitWeight() * 0.01;
+            return GetWeight() * 0.01;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace NeuroCompote
         //public double InitializedWeight { get; set; }
         //public double InitializedValue { get; set; }
         public double Weight { get; set; }
+        public int Id { get; set; }
 
         public double Value
         {
@@ -29,20 +30,21 @@ namespace NeuroCompote
             }
         }
 
-        public void InitializeWeight()
+        private void InitializeWeight()
         {
-
+            this.Weight = RndGen.GetWeight();
         }
 
-        public void AdjustWeightWithRandom(double maxRandom = 0.05)
+        public void AdjustWeightWithRandom()
         {
-
+            this.Weight += RndGen.AdjustWeight();
         }
 
-        public Synapse(double value)
+        public Synapse(int id, double value)
         {
-            Weight = weight;
+            this.Id = id;
             this.Value = value;
+            InitializeWeight();
         }
     }
 }

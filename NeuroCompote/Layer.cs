@@ -6,13 +6,34 @@ using System.Threading.Tasks;
 
 namespace NeuroCompote
 {
-    internal class Layer
+    public class Layer
     {
         public List<Neuron> Neurons { get; set; }
 
-        public Layer(List<Neuron> neurons)
+        private void InitializeNeurons(Layer inputLayer, int valueOfNeurons)
         {
-            this.Neurons = neurons;
+            for (var i = 0; i < valueOfNeurons; i += 1)
+            {
+                this.Neurons.Add(new Neuron(i, inputLayer, new Sigmoid(0.5)));
+            }
+        }
+
+        private void InitializeInputsLayer(double[] inputs)     //  Входной слой сети.
+        {
+            for (var i = 0; i < inputs.Length; i += 1)
+            {
+                this.Neurons.Add(new Neuron(i, inputs[i]));
+            }
+        }
+
+        public Layer(Layer inputLayer, int valueOfNeurons)
+        {
+            InitializeNeurons(inputLayer, valueOfNeurons);
+        }
+
+        public Layer(double[] inputs)   //  Входной слой
+        {
+            InitializeInputsLayer(inputs);
         }
     }
 }

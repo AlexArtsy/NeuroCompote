@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace NeuroCompote
 {
-    internal class Neuron
+    public class Neuron
     {
-        private readonly int layerId;
+        public readonly int layerId;
+
+        public int Id { get; set; }
         public double OutputValue { get; set; }
         public IActivation ActivationFunc { get; set; }
         public  List<Synapse> Inputs { get; set; }
@@ -25,6 +27,7 @@ namespace NeuroCompote
                 i += 1;
             });
         }
+
         public void AdjustSynapsesWithRandom(double maxValue = 0.05)
         {
             this.Inputs.ForEach((s => s.AdjustWeightWithRandom()));
@@ -45,11 +48,19 @@ namespace NeuroCompote
         }
 
         #region Constructors
-        public Neuron(Layer inputLayer, IActivation activationFunc)
+        public Neuron(int id, Layer inputLayer, IActivation activationFunc)
         {
+            this.Id = id;
             //this.layerId = layerId;
-            ActivationFunc = activationFunc;
+            this.ActivationFunc = activationFunc;
             InitializeSynapses(inputLayer);
+            CalculateValue();
+        }
+
+        public Neuron(int id, double output)    //  Для входного слоя
+        {
+            this.Id = id;
+            this.OutputValue = output;
         }
         #endregion
     }
