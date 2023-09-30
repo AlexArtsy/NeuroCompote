@@ -9,8 +9,8 @@ namespace NeuroCompote
     internal class Synapse
     {
         private double value;
-        public double InitializedWeight { get; set; }
-        public double InitializedValue { get; set; }
+        //public double InitializedWeight { get; set; }
+        //public double InitializedValue { get; set; }
         public double Weight { get; set; }
 
         public double Value
@@ -28,10 +28,21 @@ namespace NeuroCompote
                 }
             }
         }
-        public Synapse(double weight, double value)
+
+        public void InitializeWeight()
+        {
+
+        }
+
+        public void AdjustWeightWithRandom(double maxRandom = 0.05)
+        {
+
+        }
+
+        public Synapse(double value)
         {
             Weight = weight;
-            this.value = value;
+            this.Value = value;
         }
     }
 }

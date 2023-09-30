@@ -9,67 +9,48 @@ namespace NeuroCompote
     internal class Neuron
     {
         private readonly int layerId;
-        public double InputValue { get; set; }
         public double OutputValue { get; set; }
         public IActivation ActivationFunc { get; set; }
-        private Synapse[] inputs;
+        public  List<Synapse> Inputs { get; set; }
 
-        #region Constructors
-        public Neuron(int inputValue, IActivation activationFunc)    //  Для входных нейронов.
+        
+        private void InitializeSynapses(Layer inputLayer)
         {
-            InputValue = inputValue;
-            ActivationFunc = activationFunc;
-            OutputValue = CalculateValue(inputValue);
-        }
+            this.Inputs = new List<Synapse>();
 
-        public Neuron(double inputValue, IActivation activationFunc)    //  Для входных нейронов.
-        {
-            InputValue = inputValue;
-            ActivationFunc = activationFunc;
-            OutputValue = CalculateValue(inputValue);
-        }
-
-        public Neuron(double[] inputs, IActivation activationFunc)
-        {
-            this.layerId = layerId;
-            ActivationFunc = activationFunc;
-            OutputValue = 0;
-            inputs = InitializeSynapse(valueOfInputs);
-        }
-        #endregion
-        private Synapse[] InitializeSynapse(int valueOfInputs, double inputValue)
-        {
-            var rnd = new Random();
-            var synapses = new Synapse[valueOfInputs];
-
-            for (var i = 0; i < valueOfInputs; i += 1)
+            var i = 0;
+            inputLayer.Neurons.ForEach(n =>
             {
-                var weight = rnd.NextDouble();
-                synapses[i] = new Synapse(weight, inputValue);
-            }
-            return synapses;
+                this.Inputs.Add(new Synapse(i, n.OutputValue));
+                i += 1;
+            });
         }
-        public double CalculateValue(int inputValue)
+        public void AdjustSynapsesWithRandom(double maxValue = 0.05)
         {
-
-            return 0;
+            this.Inputs.ForEach((s => s.AdjustWeightWithRandom()));
         }
-
-        public double CalculateValue(double inputValue)
+        public void CalculateValue()
         {
-
-            return 0;
-        }
-
-        public double CalculateValue()
-        {
-
-            return 0;
+            this.OutputValue = ActivationFunc.Calculate(GetWeightedSum());
         }
 
         private double GetWeightedSum()
         {
-
+            double sum = 0;
+            this.Inputs.ForEach(s =>
+            {
+                sum += s.Weight * s.Value;
+            });
+            return sum;
         }
+
+        #region Constructors
+        public Neuron(Layer inputLayer, IActivation activationFunc)
+        {
+            //this.layerId = layerId;
+            ActivationFunc = activationFunc;
+            InitializeSynapses(inputLayer);
+        }
+        #endregion
     }
 }

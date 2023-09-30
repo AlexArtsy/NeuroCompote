@@ -8,5 +8,11 @@ namespace NeuroCompote
 {
     internal class Layer
     {
+        public List<Neuron> Neurons { get; set; }
+
+        public Layer(List<Neuron> neurons)
+        {
+            this.Neurons = neurons;
+        }
     }
 }
